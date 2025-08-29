@@ -1,0 +1,27 @@
+<div [@fadeIn] class="development-experiences-container">
+  @for (category of developmentExperienceCategories; track category.name) {
+    <mat-card class="development-experience-card">
+      <mat-card-header>
+        <mat-card-title>{{ category.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (panelsVisible) {
+          <div>
+            <mat-accordion>
+              @for (experience of category.experiences; track experience.name) {
+                <mat-expansion-panel [expanded]="false">
+                  <mat-expansion-panel-header [collapsedHeight]="'20px'">
+                    <mat-panel-title><b> {{ experience.name }} </b></mat-panel-title>
+                  </mat-expansion-panel-header>
+                  @for (line of experience.info; track line) {
+                    <p [innerHTML]="line"><br></p>
+                  }
+                </mat-expansion-panel>
+              }
+            </mat-accordion>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

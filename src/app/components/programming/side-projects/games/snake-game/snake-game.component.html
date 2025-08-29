@@ -1,0 +1,14 @@
+<div [@fadeIn] class="game">
+  <h2 style="margin-top: 0">Snake Game</h2>
+  <canvas
+    [attr.height]="canvasHeight"
+    [attr.width]="canvasWidth"
+    id="gameCanvas">
+  </canvas>
+  @if (!gameOver) {
+    <p>Score: {{ score }}</p>
+  } @else {
+    <p>Game Over! Final score: {{ score }}</p>
+  }
+  <button (click)="initGame()"><p style="font-size: smaller">Click here or press Enter for a new game</p></button>
+</div>

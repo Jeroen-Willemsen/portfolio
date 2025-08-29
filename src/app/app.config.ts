@@ -1,12 +1,18 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {provideHighlightOptions} from 'ngx-highlightjs';
+import {provideHttpClient} from '@angular/common/http';
+import {provideRouter} from '@angular/router';
+import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes)
-  ]
+    BrowserAnimationsModule,
+    importProvidersFrom([BrowserAnimationsModule]),
+    provideZoneChangeDetection({eventCoalescing: true}),
+    provideRouter(routes),
+    provideHttpClient(),
+    provideHighlightOptions({
+      fullLibraryLoader: () => import('highlight.js')
+    })]
 };

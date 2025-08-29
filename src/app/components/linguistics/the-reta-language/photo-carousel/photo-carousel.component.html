@@ -1,0 +1,30 @@
+<div [@fadeIn] class="carousel-wrapper">
+  <button (click)="previousImage()" class="nav-button left">
+    &#10094;
+  </button>
+  <div class="carousel-container">
+    <div class="image-container">
+      <img
+        (error)="onImageError($event)"
+        [class.fade]="isFading"
+        [ngSrc]="captionedImages[currentIndex].url"
+        alt="{{captionedImages[currentIndex].caption}}"
+        fill
+        loading="lazy"
+        title="{{captionedImages[currentIndex].caption}}">
+    </div>
+  </div>
+  <button (click)="nextImage()" class="nav-button right">
+    &#10095;
+  </button>
+</div>
+
+<div class="indicators">
+  <p>{{ captionedImages[currentIndex].caption }}</p>
+  @for (image of captionedImages; track image.url; let i = $index) {
+    <span
+      (click)="goToImage(i)"
+      [class.active]="i === currentIndex">
+  </span>
+  }
+</div>

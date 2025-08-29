@@ -1,0 +1,24 @@
+<div [@fadeIn] style="margin-left: 1em; padding-bottom: 3em">
+  <ul>
+    @for (doc of publications; track doc.id) {
+      <li>
+        <h5>{{ doc.title }}</h5>
+        <h6>{{ doc.year }}, {{ doc.authors }}</h6>
+        @if (doc.urlAlt === undefined && doc.origlocAlt === undefined) {
+          <h6>
+            <a [href]="doc.url" download="{{ doc.filename }}">pre-print</a> &#x7c;
+            <a [href]="doc.origloc" target='_blank'>publication</a>
+          </h6>
+        } @else {
+          <h6>
+            <a [href]="doc.url" download="{{ doc.filename }}">open revised dissertation</a> &#x7c;
+            <a [href]="doc.urlAlt" download="{{ doc.filename }}">open original submission</a><br>
+            <a [href]="doc.origloc" target='_blank'>navigate to revised</a> &#x7c;
+            <a [href]="doc.origlocAlt" target='_blank'>navigate to original</a>
+          </h6>
+        }
+      </li>
+    }
+  </ul>
+</div>
+

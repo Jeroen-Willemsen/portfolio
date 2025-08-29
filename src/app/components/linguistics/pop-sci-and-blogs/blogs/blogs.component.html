@@ -1,0 +1,12 @@
+<div [@fadeIn] style="padding-bottom: 3em; margin-left: 1em">
+  <ul>
+    @for (article of articles; track article.id) {
+      <li>
+        <h5>{{ article.title }}</h5>
+        <h6>{{ article.year }}, {{ article.authors }}</h6>
+        <h6><a [href]="article.url" target='_blank'>visit article</a></h6>
+      </li>
+    }
+  </ul>
+</div>
+

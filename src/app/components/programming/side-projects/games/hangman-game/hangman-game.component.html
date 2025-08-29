@@ -1,0 +1,28 @@
+<div [@fadeIn] class="game">
+  <h2 style="margin-top: 0">Hangman Game</h2>
+  <p class="word">
+    @for (letter of displayedWord; track letter) {
+      <span>{{ letter }} </span>
+    }
+  </p>
+  <p>Attempts Left: {{ attemptsLeft }}</p>
+  <div class="alphabet">
+    @for (letter of alphabet; track letter) {
+      <button
+        (click)="guessLetter(letter)"
+        [disabled]="guessedLetters.includes(letter) || gameOver">
+        {{ letter | uppercase }}
+      </button>
+    }
+  </div>
+  @if (gameOver) {
+    <div class="result">
+      @if (won) {
+        <p>Congratulations! You guessed the word!</p>
+      } @else {
+        <p>Game Over! The word was "{{ secretWord }}".</p>
+      }
+      <button (click)="newGame()">Play Again</button>
+    </div>
+  }
+</div>

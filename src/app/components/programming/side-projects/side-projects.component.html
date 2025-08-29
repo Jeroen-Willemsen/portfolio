@@ -1,0 +1,22 @@
+<div [@fadeIn]>
+  <div class="tabs">
+    <button
+      (click)="selectTab('app-games')"
+      [class.active]="selectedTab === 'app-games'">
+      Angular games
+    </button>
+    <button
+      (click)="selectTab('app-py-apps')"
+      [class.active]="selectedTab === 'app-py-apps'">
+      Python applications
+    </button>
+  </div>
+  <div class="tab-content">
+    @if (selectedTab === 'app-games') {
+      <app-games></app-games>
+    }
+    @if (selectedTab === 'app-py-apps') {
+      <app-py-apps></app-py-apps>
+    }
+  </div>
+</div>

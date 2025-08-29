@@ -1,0 +1,41 @@
+<div [@fadeIn] class="tabs">
+  <button
+    (click)="selectTab('app-hangman-game')"
+    [class.active]="selectedTab === 'app-hangman-game'">
+    Hangman
+  </button>
+  <button
+    (click)="selectTab('app-memory-game')"
+    [class.active]="selectedTab === 'app-memory-game'">
+    Memory game
+  </button>
+  <button
+    (click)="selectTab('app-snake-game')"
+    [class.active]="selectedTab === 'app-snake-game'">
+    Snake game
+  </button>
+  <button
+    (click)="selectTab('app-tic-tac-toe')"
+    [class.active]="selectedTab === 'app-tic-tac-toe'">
+    Tic-tac-toe
+  </button>
+  <button
+    (click)="selectTab('app-whack-a-mole')"
+    [class.active]="selectedTab === 'app-whack-a-mole'">
+    Whack-a-mole
+  </button>
+</div>
+
+<div class="tab-content">
+  @if (selectedTab === 'app-hangman-game') {
+    <app-hangman-game></app-hangman-game>
+  } @else if (selectedTab === 'app-memory-game') {
+    <app-memory-game></app-memory-game>
+  } @else if (selectedTab === 'app-snake-game') {
+    <app-snake-game></app-snake-game>
+  } @else if (selectedTab === 'app-tic-tac-toe') {
+    <app-tic-tac-toe></app-tic-tac-toe>
+  } @else if (selectedTab === 'app-whack-a-mole') {
+    <app-whack-a-mole></app-whack-a-mole>
+  }
+</div>

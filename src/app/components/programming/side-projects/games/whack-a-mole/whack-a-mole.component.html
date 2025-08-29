@@ -1,0 +1,26 @@
+<div [@fadeIn] class="game">
+  <h2 style="margin-top: 0">Whack-a-Mole</h2>
+  @if (gameActive) {
+    <p>Score: {{ score }}</p>
+    <p>Time Left: {{ timeLeft }} seconds</p>
+  } @else {
+    <p>Click "Start Game" to begin!</p>
+  }
+  <div class="grid">
+    @for (hole of holes; track hole; let idx = $index) {
+      <div
+        (click)="whackMole(idx)"
+        class="hole">
+        @if (hole) {
+          <div class="mole">🐹</div>
+        }
+      </div>
+    }
+  </div>
+  @if (!gameActive) {
+    <button (click)="startGame()">Start Game</button>
+    @if (timeLeft !== 30) {
+      <p>Game Over! Your score is {{ score }}.</p>
+    }
+  }
+</div>

@@ -1,0 +1,56 @@
+@media (max-width: 768px) {
+  .tabs button {
+    padding: 0 !important;
+    margin-right: 5px;
+    background-color: var(--light-background-color);
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    font-size: smaller !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs button {
+    padding: 0 !important;
+    margin-right: 5px;
+    background-color: var(--light-background-color);
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    font-size: x-small !important;
+  }
+}
+
+label {
+  font-family: 'Roboto Mono', monospace;
+  font-size: small;
+  margin-right: 1em;
+}
+
+input:checked {
+  accent-color: var(--accent-color);
+}
+
+.tabs {
+  display: flex;
+  padding: 5px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  margin-right: 5px;
+  background-color: var(--light-background-color);
+  border: none;
+  cursor: pointer;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.tabs button.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.tab-content {
+  padding: 0;
+}

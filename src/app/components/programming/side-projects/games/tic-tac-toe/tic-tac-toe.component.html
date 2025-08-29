@@ -1,0 +1,27 @@
+<div [@fadeIn] class="game">
+  <h2 style="margin-top: 0">Tic-Tac-Toe</h2>
+  <div class="board">
+    @for (cell of board; track cell; let idx = $index) {
+      <div
+        (click)="makeMove(idx)"
+        class="cell">
+        {{ cell }}
+      </div>
+    }
+  </div>
+  @if (winner) {
+    <div class="result">
+      @if (winner === 'Draw') {
+        <p>It's a Draw</p>
+      } @else {
+        <p>Player {{ winner }} Wins</p>
+      }
+      <button (click)="newGame()">New Game</button>
+    </div>
+  } @else {
+    <div class="turn">
+      Player {{ playerTurn }}'s turn
+    </div>
+  }
+</div>
+

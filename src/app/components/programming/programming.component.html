@@ -1,0 +1,20 @@
+<div [@fadeIn] class="tabs">
+  <button
+    (click)="selectTab('app-development-experience')"
+    [class.active]="selectedTab === 'app-development-experience'">
+    Professional programming experience
+  </button>
+  <button
+    (click)="selectTab('app-side-projects')"
+    [class.active]="selectedTab === 'app-side-projects'">
+    Side projects
+  </button>
+</div>
+
+<div class="tab-content">
+  @if (selectedTab === 'app-development-experience') {
+    <app-development-experience></app-development-experience>
+  } @else if (selectedTab === 'app-side-projects') {
+    <app-side-projects></app-side-projects>
+  }
+</div>

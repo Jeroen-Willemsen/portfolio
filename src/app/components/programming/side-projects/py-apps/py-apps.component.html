@@ -1,0 +1,28 @@
+<div [@fadeIn]>
+  <div class="tabs">
+    <button
+      (click)="selectTab('app-ipa-picker')"
+      [class.active]="selectedTab === 'app-ipa-picker'">
+      IPA Symbol picker and LaTeX converter
+    </button>
+    <button
+      (click)="selectTab('app-weather-app')"
+      [class.active]="selectedTab === 'app-weather-app'">
+      Simple Dutch weather app
+    </button>
+    <button
+      (click)="selectTab('app-simple-calculator')"
+      [class.active]="selectedTab === 'app-simple-calculator'">
+      Simple calculator
+    </button>
+  </div>
+  <div class="tab-content">
+    @if (selectedTab === 'app-ipa-picker') {
+      <app-ipa-picker></app-ipa-picker>
+    } @else if (selectedTab === 'app-weather-app') {
+      <app-weather-app></app-weather-app>
+    } @else if (selectedTab === 'app-simple-calculator') {
+      <app-simple-calculator></app-simple-calculator>
+    }
+  </div>
+</div>

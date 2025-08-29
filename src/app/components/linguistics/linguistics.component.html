@@ -1,0 +1,28 @@
+<div [@fadeIn]>
+  <div class="tabs">
+    <button
+      (click)="selectTab('app-publications')"
+      [class.active]="selectedTab === 'app-publications'">
+      Academic publications
+    </button>
+    <button
+      (click)="selectTab('app-pop-sci-and-blogs')"
+      [class.active]="selectedTab === 'app-pop-sci-and-blogs'">
+      Popular science and blogs
+    </button>
+    <button
+      (click)="selectTab('app-the-reta-language')"
+      [class.active]="selectedTab === 'app-the-reta-language'">
+      The Reta language
+    </button>
+  </div>
+  <div class="tab-content">
+    @if (selectedTab === 'app-publications') {
+      <app-publications></app-publications>
+    } @else if (selectedTab === 'app-pop-sci-and-blogs') {
+      <app-pop-sci-and-blogs></app-pop-sci-and-blogs>
+    } @else if (selectedTab === 'app-the-reta-language') {
+      <app-the-reta-language></app-the-reta-language>
+    }
+  </div>
+</div>

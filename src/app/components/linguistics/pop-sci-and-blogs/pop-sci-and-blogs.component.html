@@ -1,0 +1,56 @@
+<div [@fadeIn]>
+  <div class="tabs">
+    <button
+      (click)="selectTab('app-popular-science')"
+      [class.active]="selectedTab === 'app-popular-science'">
+      Popular science articles
+    </button>
+    <button
+      (click)="selectTab('app-blogs')"
+      [class.active]="selectedTab === 'app-blogs'">
+      Blogs
+    </button>
+    @if (showCheckboxes) {
+      <div style="margin: 0.5em 0 0 0.5em">
+        <input (change)="updateLanguagePreferences($event, 'en')"
+               [checked]="true"
+               id="en"
+               name="language"
+               type="checkbox"
+               value="en"/>
+        <label for="en">English</label>
+        @if (selectedTab === 'app-blogs') {
+          <input (change)="updateLanguagePreferences($event, 'nl')"
+                 [checked]="true"
+                 id="nl"
+                 name="language"
+                 type="checkbox"
+                 value="nl"/>
+          <label for="nl">Dutch</label>
+        }
+        @if (selectedTab === 'app-popular-science') {
+          <input (change)="updateLanguagePreferences($event, 'dk')"
+                 [checked]="true"
+                 id="dk"
+                 name="language"
+                 type="checkbox"
+                 value="dk"/>
+          <label for="dk">Danish</label>
+        }
+      </div>
+    }
+  </div>
+  <div class="tab-content">
+    @if (selectedTab === 'app-popular-science') {
+      <app-popular-science
+        [articles]="popsciComponentInput">
+      </app-popular-science>
+    }
+    @if (selectedTab === 'app-blogs') {
+      <app-blogs
+        [articles]="blogsComponentInput">
+      </app-blogs>
+    }
+  </div>
+</div>
+

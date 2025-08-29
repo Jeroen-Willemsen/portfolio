@@ -1,0 +1,18 @@
+<div [@fadeIn] class="game">
+  <h2 style="margin-top: 0">Memory Matching Game</h2>
+  <div class="board">
+    @for (card of cards; track card.id) {
+      <div
+        (click)="flipCard(card)"
+        [class.flipped]="card.flipped || card.matched"
+        class="card">
+        <div class="card-inner">
+          <div class="card-front">{{ card.image }}</div>
+          <div class="card-back">❓</div>
+        </div>
+      </div>
+    }
+  </div>
+  <button (click)="startGame()">Restart Game</button>
+</div>
+

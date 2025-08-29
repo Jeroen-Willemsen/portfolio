@@ -1,0 +1,37 @@
+.game {
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+  margin-top: 20px;
+}
+
+.word {
+  font-size: 2em;
+  letter-spacing: 10px;
+  margin-bottom: 20px;
+}
+
+.alphabet {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.alphabet button {
+  margin: 5px;
+  width: 40px;
+  height: 40px;
+  font-size: 1em;
+  cursor: pointer;
+  text-align: center;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+button {
+  cursor: pointer;
+}
