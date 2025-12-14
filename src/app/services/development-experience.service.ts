@@ -162,7 +162,7 @@ export class DevelopmentExperienceService {
           info: [`I took and passed an elaborate course on machine learning with Python. ` +
           `This was a PhD course called 'Social Sciences: An Applied Introduction to Machine Learning' ` +
           `and was provided by the University of Aalborg, Denmark in 2019. ` +
-          `You can download the certificate <a href=\"assets/files/SDSPHD20_AAU.pdf\" download>here</a>.`]
+          `You can download the certificate <a href=\"assets/certifications/SDSPHD20_AAU.pdf\" download>here</a>.`]
         },
       ]
     },
