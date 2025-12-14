@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production --base-href \"/portfolio/\"",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "npm run build && npx angular-cli-ghpages --dir=dist/portfolio/browser"
   },
   "prettier": {
     "printWidth": 100,
