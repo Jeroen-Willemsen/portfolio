@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DevelopmentExperienceService} from '../../../services/development-experience.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
@@ -20,7 +20,7 @@ import {DevelopmentExperienceCategory} from '../../../models/development-experie
     MatCardHeader,
     MatCardTitle,
     MatExpansionPanel,
-      MatExpansionPanelHeader,
+    MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatAccordion,
   ],
@@ -28,6 +28,12 @@ import {DevelopmentExperienceCategory} from '../../../models/development-experie
   styleUrl: '../../../app.component.scss'
 })
 export class DevelopmentExperienceComponent implements OnInit {
+  /**
+   * Categories to show. When left out, the component shows the programming experience
+   * from DevelopmentExperienceService, so other pages can reuse the same cards with their own content.
+   */
+  @Input() categories?: DevelopmentExperienceCategory[];
+
   protected developmentExperienceCategories: DevelopmentExperienceCategory[] = [];
   protected panelsVisible: boolean = false;
 
@@ -35,12 +41,18 @@ export class DevelopmentExperienceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.developmentExperienceService.getExperienceCategories()
-      .subscribe((experiences) => {
-        this.developmentExperienceCategories = experiences;
-        setTimeout(() => {
-          this.panelsVisible = true;
-        }, 50)
-      });
+    if (this.categories) {
+      this.show(this.categories);
+    } else {
+      this.developmentExperienceService.getExperienceCategories()
+        .subscribe((experiences) => this.show(experiences));
+    }
+  }
+
+  private show(categories: DevelopmentExperienceCategory[]): void {
+    this.developmentExperienceCategories = categories;
+    setTimeout(() => {
+      this.panelsVisible = true;
+    }, 50);
   }
 }

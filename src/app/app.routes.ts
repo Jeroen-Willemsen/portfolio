@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadComponent: () => import('./components/contact-me/contact-me.component').then(m => m.ContactMeComponent),
   },
   {
+    path: 'data-engineering-and-architecture',
+    title: 'Data engineering & architecture · Jeroen Willemsen',
+    loadComponent: () => import('./components/data-engineering/data-engineering.component').then(m => m.DataEngineeringComponent),
+  },
+  {
     path: 'development-experience',
     title: 'Development experience · Jeroen Willemsen',
     loadComponent: () => import('./components/programming/development-experience/development-experience.component').then(m => m.DevelopmentExperienceComponent),

@@ -1,0 +1,26 @@
+<div animate.enter="fade-in" class="tabs" role="tablist">
+  <button
+    (click)="selectTab('data-engineering')"
+    [attr.aria-selected]="selectedTab === 'data-engineering'"
+    [class.active]="selectedTab === 'data-engineering'"
+    role="tab"
+    type="button">
+    Data engineering experience
+  </button>
+  <button
+    (click)="selectTab('architecture')"
+    [attr.aria-selected]="selectedTab === 'architecture'"
+    [class.active]="selectedTab === 'architecture'"
+    role="tab"
+    type="button">
+    Architecture experience
+  </button>
+</div>
+
+<div class="tab-content" role="tabpanel">
+  @if (selectedTab === 'data-engineering') {
+    <app-development-experience [categories]="dataEngineeringCategories()"></app-development-experience>
+  } @else if (selectedTab === 'architecture') {
+    <app-development-experience [categories]="architectureCategories()"></app-development-experience>
+  }
+</div>
