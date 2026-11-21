@@ -18,7 +18,7 @@ export class PublicationService {
         'A Grammar of Reta. Aarhus Universitet: PhD dissertation.',
       description: 'description',
       url: 'assets/articles/revised_dissertation_jeroen_willemsen.pdf',
-      urlAlt: 'assets/publications/dissertation_jeroen_willemsen.pdf',
+      urlAlt: 'assets/articles/dissertation_jeroen_willemsen.pdf',
       authors: 'Jeroen Willemsen',
       year: 2021
     },
