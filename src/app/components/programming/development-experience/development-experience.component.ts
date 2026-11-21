@@ -5,12 +5,10 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/mat
 import {
   MatAccordion,
   MatExpansionPanel,
-  MatExpansionPanelDescription,
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {DevelopmentExperienceCategory} from '../../../models/development-experience.model';
-import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-development-experience',
@@ -22,21 +20,12 @@ import {animate, style, transition, trigger} from '@angular/animations';
     MatCardHeader,
     MatCardTitle,
     MatExpansionPanel,
-    MatExpansionPanelDescription,
-    MatExpansionPanelHeader,
+      MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatAccordion,
   ],
   templateUrl: './development-experience.component.html',
-  styleUrl: '../../../app.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: '../../../app.component.scss'
 })
 export class DevelopmentExperienceComponent implements OnInit {
   protected developmentExperienceCategories: DevelopmentExperienceCategory[] = [];

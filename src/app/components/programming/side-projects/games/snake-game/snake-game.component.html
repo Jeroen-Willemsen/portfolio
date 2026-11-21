@@ -1,14 +1,27 @@
-<div [@fadeIn] class="game">
+<div animate.enter="fade-in" class="game">
   <h2 style="margin-top: 0">Snake Game</h2>
   <canvas
+    #gameCanvas
     [attr.height]="canvasHeight"
     [attr.width]="canvasWidth"
-    id="gameCanvas">
+    aria-label="Snake game board. Use the arrow keys or WASD to steer."
+    role="img">
   </canvas>
-  @if (!gameOver) {
-    <p>Score: {{ score }}</p>
-  } @else {
-    <p>Game Over! Final score: {{ score }}</p>
-  }
-  <button (click)="initGame()"><p style="font-size: smaller">Click here or press Enter for a new game</p></button>
+  <p aria-live="polite">
+    @if (!gameOver) {
+      Score: {{ score }}
+    } @else {
+      Game over! Final score: {{ score }}
+    }
+    &middot; Best: {{ highScore }}
+  </p>
+  <div aria-label="Direction controls" class="touch-controls">
+    <button (click)="turn(directions.U)" aria-label="Up" type="button">&#9650;</button>
+    <div>
+      <button (click)="turn(directions.L)" aria-label="Left" type="button">&#9664;</button>
+      <button (click)="turn(directions.D)" aria-label="Down" type="button">&#9660;</button>
+      <button (click)="turn(directions.R)" aria-label="Right" type="button">&#9654;</button>
+    </div>
+  </div>
+  <button (click)="initGame()" class="new-game" type="button">New game (or press Enter)</button>
 </div>

@@ -97,6 +97,7 @@ nav a {
 nav a.active,
 nav a:hover {
   background-color: var(--accent-color);
+  color: var(--secondary-color);
 }
 
 nav li {
@@ -112,7 +113,8 @@ nav ul {
 
 p {
   font-family: 'Roboto Mono', monospace;
-  font-size: small;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 .app-container {
@@ -146,6 +148,7 @@ p {
 
 .development-experience-card {
   width: 30vw;
+  min-width: 300px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -184,7 +187,7 @@ p {
   padding: 10px 0;
 }
 
-.indicators span {
+.indicators .dot {
   display: inline-block;
   height: 12px;
   width: 12px;
@@ -193,9 +196,11 @@ p {
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border: none;
+  padding: 0;
 }
 
-.indicators span.active {
+.indicators .dot.active {
   background-color: var(--accent-color);
 }
 
@@ -241,9 +246,14 @@ p {
     font-size: smaller;
   }
 
-  mat-card-content li, mat-card-content ul, mat-card-header, mat-card-title {
+  mat-card-content li, mat-card-content ul, mat-card-title {
     font-size: smaller;
     padding: 0 !important;
+  }
+
+  mat-card-header {
+    font-size: smaller;
+    padding: 6px 10px !important;
   }
 
   mat-expansion-panel, mat-expansion-panel-header {
@@ -268,7 +278,22 @@ p {
   }
 
   p {
-    font-size: smaller;
+    font-size: 0.85rem;
+  }
+
+  .development-experience-card {
+    width: 90vw;
+  }
+
+  .carousel-wrapper,
+  .image-container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .code-block,
+  .paragraph-block {
+    width: 92vw;
   }
 }
 
@@ -285,9 +310,14 @@ p {
     font-size: x-small;
   }
 
-  mat-card-content li, mat-card-content ul, mat-card-header, mat-card-title {
+  mat-card-content li, mat-card-content ul, mat-card-title {
     font-size: x-small;
     padding: 0 !important;
+  }
+
+  mat-card-header {
+    font-size: x-small;
+    padding: 6px 10px !important;
   }
 
   mat-expansion-panel, mat-expansion-panel-header {
@@ -312,6 +342,87 @@ p {
   }
 
   p {
-    font-size: x-small;
+    font-size: 0.8rem;
+  }
+}
+
+/* ---- Shared helpers ---- */
+
+/* Fade-in for views entering the DOM; applied with animate.enter="fade-in". */
+.fade-in {
+  animation: fade-in 300ms ease-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Content lists (publications, articles, blogs). */
+.list-page {
+  margin-left: 1em;
+  padding-bottom: 3em;
+}
+
+.list-page li {
+  margin-bottom: 0.75em;
+}
+
+a {
+  color: var(--accent-color);
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+/* Visible keyboard focus everywhere, without showing rings on mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 8px 16px;
+}
+
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.language-filter {
+  border: none;
+  margin: 0.5em 0 0 0.5em;
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

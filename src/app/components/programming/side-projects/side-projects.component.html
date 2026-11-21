@@ -1,17 +1,23 @@
-<div [@fadeIn]>
-  <div class="tabs">
+<div animate.enter="fade-in">
+  <div class="tabs" role="tablist">
     <button
       (click)="selectTab('app-games')"
-      [class.active]="selectedTab === 'app-games'">
+      [attr.aria-selected]="selectedTab === 'app-games'"
+      [class.active]="selectedTab === 'app-games'"
+      role="tab"
+      type="button">
       Angular games
     </button>
     <button
       (click)="selectTab('app-py-apps')"
-      [class.active]="selectedTab === 'app-py-apps'">
+      [attr.aria-selected]="selectedTab === 'app-py-apps'"
+      [class.active]="selectedTab === 'app-py-apps'"
+      role="tab"
+      type="button">
       Python applications
     </button>
   </div>
-  <div class="tab-content">
+  <div class="tab-content" role="tabpanel">
     @if (selectedTab === 'app-games') {
       <app-games></app-games>
     }

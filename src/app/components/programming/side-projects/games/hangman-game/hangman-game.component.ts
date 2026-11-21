@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {UpperCasePipe} from '@angular/common';
 
 @Component({
@@ -9,15 +8,7 @@ import {UpperCasePipe} from '@angular/common';
     UpperCasePipe,
   ],
   templateUrl: './hangman-game.component.html',
-  styleUrl: './hangman-game.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: './hangman-game.component.scss'
 })
 export class HangmanGameComponent implements OnInit {
   words: string[] = [
@@ -101,7 +92,6 @@ export class HangmanGameComponent implements OnInit {
     "zen",
     "amethyst",
     "blossom",
-    "cascade",
     "dawn",
     "ember",
     "fable",
@@ -113,7 +103,6 @@ export class HangmanGameComponent implements OnInit {
     "lavender",
     "moss",
     "nimbus",
-    "orchid",
     "pine",
     "quill",
     "rustle",
@@ -131,12 +120,8 @@ export class HangmanGameComponent implements OnInit {
   gameOver: boolean;
   won: boolean;
 
-  constructor() {
-  }
-
-  get alphabet(): string[] {
-    return 'abcdefghijklmnopqrstuvwxyz'.split('');
-  }
+  readonly alphabet: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  readonly maxAttempts = 6;
 
   ngOnInit(): void {
     this.newGame();
@@ -146,10 +131,24 @@ export class HangmanGameComponent implements OnInit {
     this.secretWord =
       this.words[Math.floor(Math.random() * this.words.length)];
     this.displayedWord = Array(this.secretWord.length).fill('_');
-    this.attemptsLeft = 6;
+    this.attemptsLeft = this.maxAttempts;
     this.guessedLetters = [];
     this.gameOver = false;
     this.won = false;
+  }
+
+  /** Lets players type letters on a physical keyboard; Enter starts a new game once it's over. */
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    const key = event.key.toLowerCase();
+    if (this.gameOver && key === 'enter') {
+      this.newGame();
+    } else if (this.alphabet.includes(key)) {
+      this.guessLetter(key);
+    }
   }
 
   guessLetter(letter: string): void {

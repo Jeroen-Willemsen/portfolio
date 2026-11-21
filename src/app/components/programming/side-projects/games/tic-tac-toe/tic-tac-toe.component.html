@@ -1,22 +1,26 @@
-<div [@fadeIn] class="game">
+<div animate.enter="fade-in" class="game">
   <h2 style="margin-top: 0">Tic-Tac-Toe</h2>
-  <div class="board">
-    @for (cell of board; track cell; let idx = $index) {
-      <div
+  <div aria-label="Tic-tac-toe board" class="board" role="grid">
+    @for (cell of board; track $index; let idx = $index) {
+      <button
         (click)="makeMove(idx)"
-        class="cell">
+        [attr.aria-label]="'Cell ' + (idx + 1) + ': ' + (cell ?? 'empty')"
+        [class.win]="winningLine.includes(idx)"
+        [disabled]="!!cell || !!winner"
+        class="cell"
+        type="button">
         {{ cell }}
-      </div>
+      </button>
     }
   </div>
   @if (winner) {
-    <div class="result">
+    <div aria-live="polite" class="result">
       @if (winner === 'Draw') {
-        <p>It's a Draw</p>
+        <p>It's a draw</p>
       } @else {
-        <p>Player {{ winner }} Wins</p>
+        <p>Player {{ winner }} wins</p>
       }
-      <button (click)="newGame()">New Game</button>
+      <button (click)="newGame()">New game</button>
     </div>
   } @else {
     <div class="turn">
@@ -24,4 +28,3 @@
     </div>
   }
 </div>
-

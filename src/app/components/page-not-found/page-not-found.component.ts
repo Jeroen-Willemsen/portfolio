@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
@@ -10,15 +9,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
     RouterLinkActive
   ],
   templateUrl: './page-not-found.component.html',
-  styleUrl: './page-not-found.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: './page-not-found.component.scss'
 })
 export class PageNotFoundComponent {
 }

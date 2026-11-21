@@ -1,22 +1,31 @@
-<div [@fadeIn]>
-  <div class="tabs">
+<div animate.enter="fade-in">
+  <div class="tabs" role="tablist">
     <button
       (click)="selectTab('app-publications')"
-      [class.active]="selectedTab === 'app-publications'">
+      [attr.aria-selected]="selectedTab === 'app-publications'"
+      [class.active]="selectedTab === 'app-publications'"
+      role="tab"
+      type="button">
       Academic publications
     </button>
     <button
       (click)="selectTab('app-pop-sci-and-blogs')"
-      [class.active]="selectedTab === 'app-pop-sci-and-blogs'">
+      [attr.aria-selected]="selectedTab === 'app-pop-sci-and-blogs'"
+      [class.active]="selectedTab === 'app-pop-sci-and-blogs'"
+      role="tab"
+      type="button">
       Popular science and blogs
     </button>
     <button
       (click)="selectTab('app-the-reta-language')"
-      [class.active]="selectedTab === 'app-the-reta-language'">
+      [attr.aria-selected]="selectedTab === 'app-the-reta-language'"
+      [class.active]="selectedTab === 'app-the-reta-language'"
+      role="tab"
+      type="button">
       The Reta language
     </button>
   </div>
-  <div class="tab-content">
+  <div class="tab-content" role="tabpanel">
     @if (selectedTab === 'app-publications') {
       <app-publications></app-publications>
     } @else if (selectedTab === 'app-pop-sci-and-blogs') {

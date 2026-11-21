@@ -35,3 +35,15 @@
 button {
   cursor: pointer;
 }
+
+.alphabet button.hit {
+  background-color: #c8e6c9;
+}
+
+.alphabet button.miss {
+  background-color: #ffcdd2;
+}
+
+.hint {
+  color: #6c757d;
+}

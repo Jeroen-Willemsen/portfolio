@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {PopSciAndBlogsComponent} from './pop-sci-and-blogs/pop-sci-and-blogs.component';
 import {TheRetaLanguageComponent} from './the-reta-language/the-reta-language.component';
-import {animate, style, transition, trigger} from '@angular/animations';
 import {PublicationsComponent} from './publications/publications.component';
 
 @Component({
@@ -13,15 +12,7 @@ import {PublicationsComponent} from './publications/publications.component';
     PublicationsComponent
   ],
   templateUrl: './linguistics.component.html',
-  styleUrl: '../../app.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: '../../app.component.scss'
 })
 export class LinguisticsComponent {
   selectedTab: string = 'app-publications';

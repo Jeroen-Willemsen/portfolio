@@ -1,17 +1,27 @@
-<div [@fadeIn] class="test">
+<div animate.enter="fade-in" class="test">
   <h2 style="margin-top: 0">Typing Speed Test</h2>
-  <p class="text-to-type">{{ text }}</p>
+  <p aria-label="Text to type" class="text-to-type">
+    @for (c of characters; track $index) {
+      <span [class]="c.state">{{ c.char }}</span>
+    }
+  </p>
   <textarea
     (input)="onTextInput()"
     [(ngModel)]="enteredText"
-    [disabled]="timeLeft === 0">
+    [disabled]="isFinished"
+    aria-label="Type the text above here"
+    autocapitalize="off"
+    autocomplete="off"
+    placeholder="Start typing to begin the timer..."
+    spellcheck="false">
   </textarea>
-  <p>Time Left: {{ timeLeft }} seconds</p>
-  @if (timeLeft === 0) {
+  <p aria-live="polite">
+    Time left: {{ timeLeft }}s &middot; {{ wpm }} WPM &middot; {{ accuracy }}% accuracy
+  </p>
+  @if (isFinished) {
     <div>
-      <p>Your typing speed is {{ wpm }} words per minute.</p>
-      <button (click)="resetTest()">Try Again</button>
+      <p>Done! You typed {{ wpm }} words per minute with {{ accuracy }}% accuracy.</p>
+      <button (click)="resetTest()" type="button">Try again</button>
     </div>
   }
 </div>
-

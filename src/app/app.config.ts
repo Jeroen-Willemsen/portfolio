@@ -1,18 +1,20 @@
-import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
 import {provideHighlightOptions} from 'ngx-highlightjs';
 import {provideHttpClient} from '@angular/common/http';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withInMemoryScrolling} from '@angular/router';
 import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    BrowserAnimationsModule,
-    importProvidersFrom([BrowserAnimationsModule]),
     provideZoneChangeDetection({eventCoalescing: true}),
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({scrollPositionRestoration: 'top'})),
     provideHttpClient(),
+    // Only the Python grammar is needed for the code samples, so load just that instead of all of highlight.js.
     provideHighlightOptions({
-      fullLibraryLoader: () => import('highlight.js')
-    })]
+      coreLibraryLoader: () => import('highlight.js/lib/core'),
+      languages: {
+        python: () => import('highlight.js/lib/languages/python'),
+      },
+    }),
+  ],
 };

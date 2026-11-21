@@ -1,15 +1,14 @@
-<div [@fadeIn] class="app-container">
-  <nav>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header animate.enter="fade-in" class="app-container">
+  <nav aria-label="Main">
     <ul>
-      <li><a routerLink="/about-me" routerLinkActive="active">About Me</a></li>
-      <li><a routerLink="/linguistics" routerLinkActive="active">Linguistics</a></li>
-      <li><a routerLink="/programming" routerLinkActive="active">Programming</a></li>
-      <!--    <li><a routerLink="/contact-me" routerLinkActive="active">Contact Me</a></li>-->
+      <li><a ariaCurrentWhenActive="page" routerLink="/about-me" routerLinkActive="active">About Me</a></li>
+      <li><a ariaCurrentWhenActive="page" routerLink="/linguistics" routerLinkActive="active">Linguistics</a></li>
+      <li><a ariaCurrentWhenActive="page" routerLink="/programming" routerLinkActive="active">Programming</a></li>
     </ul>
   </nav>
-</div>
-<div class="content">
+</header>
+<main class="content" id="main-content" tabindex="-1">
   <router-outlet></router-outlet>
-</div>
-<br>
+</main>
 <app-footer></app-footer>

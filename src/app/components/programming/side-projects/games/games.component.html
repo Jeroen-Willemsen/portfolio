@@ -1,32 +1,55 @@
-<div [@fadeIn] class="tabs">
+<div animate.enter="fade-in" class="tabs" role="tablist">
   <button
     (click)="selectTab('app-hangman-game')"
-    [class.active]="selectedTab === 'app-hangman-game'">
+    [attr.aria-selected]="selectedTab === 'app-hangman-game'"
+    [class.active]="selectedTab === 'app-hangman-game'"
+    role="tab"
+    type="button">
     Hangman
   </button>
   <button
     (click)="selectTab('app-memory-game')"
-    [class.active]="selectedTab === 'app-memory-game'">
+    [attr.aria-selected]="selectedTab === 'app-memory-game'"
+    [class.active]="selectedTab === 'app-memory-game'"
+    role="tab"
+    type="button">
     Memory game
   </button>
   <button
     (click)="selectTab('app-snake-game')"
-    [class.active]="selectedTab === 'app-snake-game'">
+    [attr.aria-selected]="selectedTab === 'app-snake-game'"
+    [class.active]="selectedTab === 'app-snake-game'"
+    role="tab"
+    type="button">
     Snake game
   </button>
   <button
     (click)="selectTab('app-tic-tac-toe')"
-    [class.active]="selectedTab === 'app-tic-tac-toe'">
+    [attr.aria-selected]="selectedTab === 'app-tic-tac-toe'"
+    [class.active]="selectedTab === 'app-tic-tac-toe'"
+    role="tab"
+    type="button">
     Tic-tac-toe
   </button>
   <button
+    (click)="selectTab('app-typing-speed-test')"
+    [attr.aria-selected]="selectedTab === 'app-typing-speed-test'"
+    [class.active]="selectedTab === 'app-typing-speed-test'"
+    role="tab"
+    type="button">
+    Typing test
+  </button>
+  <button
     (click)="selectTab('app-whack-a-mole')"
-    [class.active]="selectedTab === 'app-whack-a-mole'">
+    [attr.aria-selected]="selectedTab === 'app-whack-a-mole'"
+    [class.active]="selectedTab === 'app-whack-a-mole'"
+    role="tab"
+    type="button">
     Whack-a-mole
   </button>
 </div>
 
-<div class="tab-content">
+<div class="tab-content" role="tabpanel">
   @if (selectedTab === 'app-hangman-game') {
     <app-hangman-game></app-hangman-game>
   } @else if (selectedTab === 'app-memory-game') {
@@ -35,6 +58,8 @@
     <app-snake-game></app-snake-game>
   } @else if (selectedTab === 'app-tic-tac-toe') {
     <app-tic-tac-toe></app-tic-tac-toe>
+  } @else if (selectedTab === 'app-typing-speed-test') {
+    <app-typing-speed-test></app-typing-speed-test>
   } @else if (selectedTab === 'app-whack-a-mole') {
     <app-whack-a-mole></app-whack-a-mole>
   }

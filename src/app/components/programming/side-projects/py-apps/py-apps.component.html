@@ -1,22 +1,31 @@
-<div [@fadeIn]>
-  <div class="tabs">
+<div animate.enter="fade-in">
+  <div class="tabs" role="tablist">
     <button
       (click)="selectTab('app-ipa-picker')"
-      [class.active]="selectedTab === 'app-ipa-picker'">
+      [attr.aria-selected]="selectedTab === 'app-ipa-picker'"
+      [class.active]="selectedTab === 'app-ipa-picker'"
+      role="tab"
+      type="button">
       IPA Symbol picker and LaTeX converter
     </button>
     <button
       (click)="selectTab('app-weather-app')"
-      [class.active]="selectedTab === 'app-weather-app'">
+      [attr.aria-selected]="selectedTab === 'app-weather-app'"
+      [class.active]="selectedTab === 'app-weather-app'"
+      role="tab"
+      type="button">
       Simple Dutch weather app
     </button>
     <button
       (click)="selectTab('app-simple-calculator')"
-      [class.active]="selectedTab === 'app-simple-calculator'">
+      [attr.aria-selected]="selectedTab === 'app-simple-calculator'"
+      [class.active]="selectedTab === 'app-simple-calculator'"
+      role="tab"
+      type="button">
       Simple calculator
     </button>
   </div>
-  <div class="tab-content">
+  <div class="tab-content" role="tabpanel">
     @if (selectedTab === 'app-ipa-picker') {
       <app-ipa-picker></app-ipa-picker>
     } @else if (selectedTab === 'app-weather-app') {

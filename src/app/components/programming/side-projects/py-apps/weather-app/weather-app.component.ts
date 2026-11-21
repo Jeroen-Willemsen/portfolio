@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {HighlightModule} from 'ngx-highlightjs';
-import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-weather-app',
@@ -9,15 +8,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
     HighlightModule
   ],
   templateUrl: './weather-app.component.html',
-  styleUrl: './weather-app.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: './weather-app.component.scss'
 })
 export class SimpleDutchWeatherAppComponent {
   code: string =

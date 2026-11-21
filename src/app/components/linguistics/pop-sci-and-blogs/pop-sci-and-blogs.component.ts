@@ -1,125 +1,73 @@
 import {BlogsComponent} from './blogs/blogs.component';
 import {Component, OnInit} from '@angular/core';
-import {GamesComponent} from '../../programming/side-projects/games/games.component';
 import {PopSciAndBlogService} from '../../../services/pop-sci-and-blog.service';
 import {PopularScienceArticle} from '../../../models/popular-science.article';
 import {PopularScienceComponent} from './popular-science/popular-science.component';
-import {
-  PythonApplicationsComponent
-} from '../../programming/side-projects/py-apps/py-apps.component';
-import {animate, style, transition, trigger} from '@angular/animations';
+
+type Tab = 'app-popular-science' | 'app-blogs';
+type Language = PopularScienceArticle['language'];
 
 @Component({
   selector: 'app-pop-sci-and-blogs',
   standalone: true,
   imports: [
     BlogsComponent,
-    GamesComponent,
     PopularScienceComponent,
-    PythonApplicationsComponent,
   ],
   templateUrl: './pop-sci-and-blogs.component.html',
-  styleUrl: '../../../app.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: '../../../app.component.scss'
 })
 export class PopSciAndBlogsComponent implements OnInit {
-  selectedTab: string = 'app-popular-science';
-
-  showEnglish: boolean = true;
-  showDutch: boolean = true;
-  showDanish: boolean = true;
-  showCheckboxes: boolean = true;
-
-  articles: PopularScienceArticle[];
-  blogsComponentInput: PopularScienceArticle[];
-  popsciComponentInput: PopularScienceArticle[];
+  selectedTab: Tab = 'app-popular-science';
+  articles: PopularScienceArticle[] = [];
+  /** Languages currently ticked; every language starts out selected. */
+  selectedLanguages = new Set<Language>(['English', 'Dutch', 'Danish']);
 
   constructor(private popularScienceArticleService: PopSciAndBlogService) {
+  }
+
+  /** The languages that actually occur in the current tab, so we only offer useful checkboxes. */
+  get availableLanguages(): Language[] {
+    const languages = this.articlesOfType(this.currentType).map(article => article.language);
+    return [...new Set(languages)];
+  }
+
+  get popsciComponentInput(): PopularScienceArticle[] {
+    return this.filtered('pop-sci');
+  }
+
+  get blogsComponentInput(): PopularScienceArticle[] {
+    return this.filtered('blog');
+  }
+
+  private get currentType(): PopularScienceArticle['type'] {
+    return this.selectedTab === 'app-blogs' ? 'blog' : 'pop-sci';
   }
 
   ngOnInit(): void {
     this.popularScienceArticleService.getOverview()
       .subscribe((docs) => {
-        this.articles = docs
-          .sort((a, b) => b.year - a.year);
-        this.blogsComponentInput = this.articles.filter(article => article.type === "blog");
-        this.popsciComponentInput = this.articles.filter(article => article.type === "pop-sci");
+        this.articles = [...docs].sort((a, b) => b.year - a.year);
       });
   }
 
-  protected selectTab = (tabName: string): void => {
+  protected selectTab(tabName: Tab): void {
     this.selectedTab = tabName;
-    this.resetCheckboxesAndComponentInput();
-  };
+  }
 
-  protected updateLanguagePreferences = (event: Event, lang: 'en' | 'nl' | 'dk') => {
-    const checkbox = event.target as HTMLInputElement;
-    switch (lang) {
-      case 'en':
-        this.showEnglish = checkbox.checked;
-        break;
-      case 'nl':
-        this.showDutch = checkbox.checked;
-        break;
-      case 'dk':
-        this.showDanish = checkbox.checked;
-        break;
+  protected toggleLanguage(language: Language, checked: boolean): void {
+    if (checked) {
+      this.selectedLanguages.add(language);
+    } else {
+      this.selectedLanguages.delete(language);
     }
-    this.updateArticleSelection(this.showEnglish, this.showDutch, this.showDanish, this.selectedTab)
-  };
+  }
 
-  protected updateArticleSelection = (en: boolean, nl: boolean, dk: boolean, tab: string) => {
-    const allLanguagesSelected = en && nl && dk;
-    switch (tab) {
-      case 'app-popular-science':
-        if (allLanguagesSelected || (!en && !dk)) {
-          this.resetCheckboxesAndComponentInput();
-        } else {
-          if (en === false) {
-            this.popsciComponentInput = [...this.popsciComponentInput]
-              .filter(article => article.language !== "English");
-          }
-          if (dk === false) {
-            this.popsciComponentInput = [...this.popsciComponentInput]
-              .filter(article => article.language !== "Danish");
-          }
-        }
-        break;
-      case 'app-blogs':
-        if (allLanguagesSelected || (!en && !nl)) {
-          this.resetCheckboxesAndComponentInput();
-        } else {
-          if (en === false) {
-            this.blogsComponentInput = [...this.blogsComponentInput]
-              .filter(article => article.language !== "English");
-          }
-          if (nl === false) {
-            this.blogsComponentInput = [...this.blogsComponentInput]
-              .filter(article => article.language !== "Dutch");
-          }
-        }
-        break;
-    }
-  };
+  private articlesOfType(type: PopularScienceArticle['type']): PopularScienceArticle[] {
+    return this.articles.filter(article => article.type === type);
+  }
 
-  private resetCheckboxesAndComponentInput = (): void => {
-    this.showCheckboxes = false;
-    setTimeout(() => {
-      this.showCheckboxes = true;
-      this.blogsComponentInput = [...this.articles]
-        .filter(article => article.type === "blog");
-      this.popsciComponentInput = [...this.articles]
-        .filter(article => article.type === "pop-sci");
-      this.showEnglish = true;
-      this.showDutch = true;
-      this.showDanish = true;
-    }, 50)
-  };
+  private filtered(type: PopularScienceArticle['type']): PopularScienceArticle[] {
+    return this.articlesOfType(type).filter(article => this.selectedLanguages.has(article.language));
+  }
 }

@@ -7,8 +7,35 @@ canvas {
   border: 1px solid #ccc;
   background-color: #f0f0f0;
   max-height: 40vh;
+  max-width: 95vw;
 }
 
 p {
   font-size: 1em;
+}
+
+.new-game {
+  font-family: 'Roboto Mono', monospace;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+/* On-screen arrows only appear on touch devices, where there are no arrow keys. */
+.touch-controls {
+  display: none;
+  margin-bottom: 10px;
+
+  button {
+    width: 48px;
+    height: 48px;
+    margin: 2px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-controls {
+    display: block;
+  }
 }

@@ -5,7 +5,6 @@ import {SnakeGameComponent} from './snake-game/snake-game.component';
 import {TicTacToeComponent} from './tic-tac-toe/tic-tac-toe.component';
 import {TypingSpeedTestComponent} from './typing-speed-test/typing-speed-test.component';
 import {WhackAMoleComponent} from './whack-a-mole/whack-a-mole.component';
-import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-games',
@@ -19,15 +18,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
     WhackAMoleComponent,
   ],
   templateUrl: './games.component.html',
-  styleUrl: '../../../../app.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: '../../../../app.component.scss'
 })
 export class GamesComponent {
   selectedTab: string = 'app-hangman-game';

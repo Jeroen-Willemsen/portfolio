@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, HostListener} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, ViewChild} from '@angular/core';
 
 export enum DirectionEnum {
-  U = "Up",
-  D = "Down",
-  L = "Left",
-  R = "Right"
+  U = 'Up',
+  D = 'Down',
+  L = 'Left',
+  R = 'Right'
 }
 
 export interface MovingParts {
@@ -13,138 +12,169 @@ export interface MovingParts {
   y: number;
 }
 
+const OPPOSITE: Record<DirectionEnum, DirectionEnum> = {
+  [DirectionEnum.U]: DirectionEnum.D,
+  [DirectionEnum.D]: DirectionEnum.U,
+  [DirectionEnum.L]: DirectionEnum.R,
+  [DirectionEnum.R]: DirectionEnum.L,
+};
+
+const KEY_TO_DIRECTION: Record<string, DirectionEnum> = {
+  ArrowUp: DirectionEnum.U, w: DirectionEnum.U, W: DirectionEnum.U,
+  ArrowDown: DirectionEnum.D, s: DirectionEnum.D, S: DirectionEnum.D,
+  ArrowLeft: DirectionEnum.L, a: DirectionEnum.L, A: DirectionEnum.L,
+  ArrowRight: DirectionEnum.R, d: DirectionEnum.R, D: DirectionEnum.R,
+};
+
+const HIGH_SCORE_KEY = 'snake-high-score';
+
 @Component({
   selector: 'app-snake-game',
   standalone: true,
   imports: [],
   templateUrl: './snake-game.component.html',
-  styleUrl: './snake-game.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms ease-in', style({opacity: 1}))
-      ])
-    ])
-  ]
+  styleUrl: './snake-game.component.scss'
 })
-export class SnakeGameComponent implements AfterViewInit {
-  protected canvas: HTMLCanvasElement;
-  protected ctx: CanvasRenderingContext2D;
-  protected box: number = 20;
-  protected snake: MovingParts[] = [];
-  protected direction: DirectionEnum;
-  protected food: MovingParts;
-  protected gameInterval: NodeJS.Timeout | number;
+export class SnakeGameComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('gameCanvas') private canvasRef: ElementRef<HTMLCanvasElement>;
+
+  protected readonly box: number = 20;
+  protected readonly canvasWidth: number = 1200;
+  protected readonly canvasHeight: number = 600;
+  protected readonly directions = DirectionEnum;
   protected score: number = 0;
-  protected canvasWidth: number = 1200;
-  protected canvasHeight: number = 600;
+  protected highScore: number = SnakeGameComponent.loadHighScore();
   protected gameOver: boolean = false;
 
+  private ctx: CanvasRenderingContext2D;
+  private snake: MovingParts[] = [];
+  private food: MovingParts;
+  private direction: DirectionEnum;
+  /** Turns requested since the last tick; queued so fast key presses can't reverse the snake into itself. */
+  private directionQueue: DirectionEnum[] = [];
+  private gameInterval?: ReturnType<typeof setInterval>;
+
+  private static loadHighScore(): number {
+    try {
+      return Number(localStorage.getItem(HIGH_SCORE_KEY)) || 0;
+    } catch {
+      return 0;
+    }
+  }
+
   ngAfterViewInit(): void {
-    this.canvas = <HTMLCanvasElement>document.getElementById('gameCanvas');
-    this.ctx = this.canvas.getContext('2d');
+    this.ctx = this.canvasRef.nativeElement.getContext('2d');
     this.initGame();
   }
 
-  initGame: () => void = (): void => {
-    if (this.gameInterval) {
-      clearInterval(this.gameInterval);
-    } // Cleared any existing game intervals
+  ngOnDestroy(): void {
+    clearInterval(this.gameInterval);
+  }
+
+  initGame = (): void => {
+    clearInterval(this.gameInterval);
     this.snake = [{x: 9 * this.box, y: 10 * this.box}];
     this.generateFood();
     this.score = 0;
     this.direction = this.getRandomDirection();
-    this.gameOver = false; // Reset game over flag
-    // Start the game loop
+    this.directionQueue = [];
+    this.gameOver = false;
     this.gameInterval = setInterval(() => this.gameLoop(), 100);
   };
 
-  generateFood(): void {
-    this.food = {
-      x: Math.floor(Math.random() * (this.canvasWidth / this.box)) * this.box,
-      y: Math.floor(Math.random() * (this.canvasHeight / this.box)) * this.box,
-    };
-  }
-
-  @HostListener('document:keydown', ['$event']) handleKeyDown: (event: KeyboardEvent) => void
-    = (event: KeyboardEvent): void => {
-    const key: number = event.keyCode;
-    if (key === 37 && this.direction !== DirectionEnum.R) {
-      this.direction = DirectionEnum.L;
-    } else if (key === 38 && this.direction !== DirectionEnum.D) {
-      this.direction = DirectionEnum.U;
-    } else if (key === 39 && this.direction !== DirectionEnum.L) {
-      this.direction = DirectionEnum.R;
-    } else if (key === 40 && this.direction !== DirectionEnum.U) {
-      this.direction = DirectionEnum.D;
-    } // Press enter to start new game upon gameOver === true
-    if (event.key === 'Enter' && this.gameOver) {
+  @HostListener('document:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent): void {
+    const requested = KEY_TO_DIRECTION[event.key];
+    if (requested) {
+      event.preventDefault(); // Stop the arrow keys from scrolling the page while playing.
+      this.turn(requested);
+    } else if (event.key === 'Enter' && this.gameOver) {
       this.initGame();
     }
-  };
+  }
 
-  gameLoop: () => void = (): void => {
-    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    for (let i = 0; i < this.snake.length; i++) {
-      this.ctx.fillStyle = i === 0 ? 'green' : 'lightgreen';
-      this.ctx.fillRect(
-        this.snake[i].x,
-        this.snake[i].y,
-        this.box,
-        this.box
-      );
+  /** Also used by the on-screen buttons for touch devices. */
+  protected turn(requested: DirectionEnum): void {
+    const last = this.directionQueue.at(-1) ?? this.direction;
+    if (requested !== last && requested !== OPPOSITE[last] && this.directionQueue.length < 3) {
+      this.directionQueue.push(requested);
+    }
+  }
+
+  private generateFood(): void {
+    do {
+      this.food = {
+        x: Math.floor(Math.random() * (this.canvasWidth / this.box)) * this.box,
+        y: Math.floor(Math.random() * (this.canvasHeight / this.box)) * this.box,
+      };
+    } while (this.collision(this.food, this.snake)); // Never spawn food inside the snake.
+  }
+
+  private gameLoop(): void {
+    if (this.directionQueue.length) {
+      this.direction = this.directionQueue.shift();
     }
 
-    this.ctx.fillStyle = 'red';
-    this.ctx.fillRect(this.food.x, this.food.y, this.box, this.box);
-
-    let snakeX: number = this.snake[0].x;
-    let snakeY: number = this.snake[0].y;
-
+    let {x: snakeX, y: snakeY} = this.snake[0];
     if (this.direction === DirectionEnum.L) snakeX -= this.box;
     if (this.direction === DirectionEnum.U) snakeY -= this.box;
     if (this.direction === DirectionEnum.R) snakeX += this.box;
     if (this.direction === DirectionEnum.D) snakeY += this.box;
+    const newHead: MovingParts = {x: snakeX, y: snakeY};
 
-    // Check collision with walls or self
+    const ateFood = snakeX === this.food.x && snakeY === this.food.y;
+    // The tail moves out of the way this tick unless the snake grows, so it doesn't count as a collision.
+    const body = ateFood ? this.snake : this.snake.slice(0, -1);
     if (
       snakeX < 0 ||
       snakeY < 0 ||
       snakeX >= this.canvasWidth ||
       snakeY >= this.canvasHeight ||
-      this.collision({x: snakeX, y: snakeY}, this.snake)
+      this.collision(newHead, body)
     ) {
-      clearInterval(this.gameInterval);
-      this.gameOver = true; // Set game over flag
+      this.endGame();
       return;
     }
 
-    let newHead: MovingParts = {x: snakeX, y: snakeY};
-
-    // Check if snake eats food
-    if (snakeX === this.food.x && snakeY === this.food.y) {
+    this.snake.unshift(newHead);
+    if (ateFood) {
       this.score++;
       this.generateFood();
     } else {
       this.snake.pop();
     }
-    this.snake.unshift(newHead);
-  };
+    this.draw();
+  }
 
-  collision: (head: MovingParts, array: MovingParts[]) => boolean
-    = (head: MovingParts, array: MovingParts[]): boolean => {
-    for (let i: number = 0; i < array.length; i++) {
-      if (head.x === array[i].x && head.y === array[i].y) {
-        return true;
+  private draw(): void {
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.snake.forEach((part, i) => {
+      this.ctx.fillStyle = i === 0 ? 'green' : 'lightgreen';
+      this.ctx.fillRect(part.x, part.y, this.box, this.box);
+    });
+    this.ctx.fillStyle = 'red';
+    this.ctx.fillRect(this.food.x, this.food.y, this.box, this.box);
+  }
+
+  private endGame(): void {
+    clearInterval(this.gameInterval);
+    this.gameOver = true;
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+      try {
+        localStorage.setItem(HIGH_SCORE_KEY, String(this.highScore));
+      } catch {
+        // Storage unavailable (e.g. private mode); keep the in-memory high score.
       }
     }
-    return false;
-  };
+  }
 
-  private getRandomDirection: () => DirectionEnum = () => {
+  private collision(head: MovingParts, parts: MovingParts[]): boolean {
+    return parts.some(part => part.x === head.x && part.y === head.y);
+  }
+
+  private getRandomDirection(): DirectionEnum {
     const directionArray: DirectionEnum[] = Object.values(DirectionEnum);
-    const randomNumber: number = Math.floor(Math.random() * directionArray.length);
-    return directionArray[randomNumber];
+    return directionArray[Math.floor(Math.random() * directionArray.length)];
   }
 }

@@ -1,11 +1,14 @@
-<div [@fadeIn] style="padding-bottom: 3em; margin-left: 1em">
+<div animate.enter="fade-in" class="list-page">
   <ul>
     @for (article of articles; track article.id) {
       <li>
         <h5>{{ article.title }}</h5>
         <h6>{{ article.year }}, {{ article.authors }}</h6>
-        <h6><a [href]="article.url" target='_blank'>visit article</a></h6>
+        <h6>{{ article.language }} &#x7c; <a [href]="article.url" rel="noopener noreferrer" target="_blank">read article</a></h6>
       </li>
     }
   </ul>
+  @if (!articles?.length) {
+    <p>No articles match the selected languages.</p>
+  }
 </div>

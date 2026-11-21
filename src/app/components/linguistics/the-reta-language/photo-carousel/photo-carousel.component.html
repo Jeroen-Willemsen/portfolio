@@ -1,30 +1,45 @@
-<div [@fadeIn] class="carousel-wrapper">
-  <button (click)="previousImage()" class="nav-button left">
-    &#10094;
-  </button>
-  <div class="carousel-container">
-    <div class="image-container">
-      <img
-        (error)="onImageError($event)"
-        [class.fade]="isFading"
-        [ngSrc]="captionedImages[currentIndex].url"
-        alt="{{captionedImages[currentIndex].caption}}"
-        fill
-        loading="lazy"
-        title="{{captionedImages[currentIndex].caption}}">
+@if (captionedImages.length) {
+  <section
+    (focusin)="setPaused(true)"
+    (focusout)="setPaused(false)"
+    (mouseenter)="setPaused(true)"
+    (mouseleave)="setPaused(false)"
+    aria-label="Photos from fieldwork among the Reta"
+    aria-roledescription="carousel">
+    <div animate.enter="fade-in" class="carousel-wrapper">
+      <button (click)="previousImage()" aria-label="Previous photo" class="nav-button left" type="button">
+        &#10094;
+      </button>
+      <div class="carousel-container">
+        <div class="image-container">
+          <img
+            (error)="onImageError($event)"
+            [alt]="captionedImages[currentIndex].caption"
+            [class.fade]="isFading"
+            [ngSrc]="captionedImages[currentIndex].url"
+            fill>
+        </div>
+      </div>
+      <button (click)="nextImage()" aria-label="Next photo" class="nav-button right" type="button">
+        &#10095;
+      </button>
     </div>
-  </div>
-  <button (click)="nextImage()" class="nav-button right">
-    &#10095;
-  </button>
-</div>
 
-<div class="indicators">
-  <p>{{ captionedImages[currentIndex].caption }}</p>
-  @for (image of captionedImages; track image.url; let i = $index) {
-    <span
-      (click)="goToImage(i)"
-      [class.active]="i === currentIndex">
-  </span>
-  }
-</div>
+    <div class="indicators">
+      <p aria-live="polite">
+        {{ captionedImages[currentIndex].caption }}
+        <span class="counter">({{ currentIndex + 1 }}/{{ captionedImages.length }})</span>
+      </p>
+      @for (image of captionedImages; track image.url; let i = $index) {
+        <button
+          (click)="goToImage(i)"
+          [attr.aria-current]="i === currentIndex"
+          [attr.aria-label]="'Show photo ' + (i + 1) + ': ' + image.caption"
+          [class.active]="i === currentIndex"
+          class="dot"
+          type="button">
+        </button>
+      }
+    </div>
+  </section>
+}

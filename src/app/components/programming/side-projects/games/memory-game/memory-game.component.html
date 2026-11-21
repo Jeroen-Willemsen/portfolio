@@ -1,18 +1,27 @@
-<div [@fadeIn] class="game">
+<div animate.enter="fade-in" class="game">
   <h2 style="margin-top: 0">Memory Matching Game</h2>
+  <p aria-live="polite">
+    @if (won) {
+      You found all pairs in {{ moves }} moves!
+    } @else {
+      Moves: {{ moves }}
+    }
+  </p>
   <div class="board">
     @for (card of cards; track card.id) {
-      <div
+      <button
         (click)="flipCard(card)"
+        [attr.aria-label]="card.flipped || card.matched ? card.image : 'Hidden card'"
         [class.flipped]="card.flipped || card.matched"
-        class="card">
+        [class.matched]="card.matched"
+        class="card"
+        type="button">
         <div class="card-inner">
           <div class="card-front">{{ card.image }}</div>
           <div class="card-back">❓</div>
         </div>
-      </div>
+      </button>
     }
   </div>
-  <button (click)="startGame()">Restart Game</button>
+  <button (click)="startGame()">Restart game</button>
 </div>
-

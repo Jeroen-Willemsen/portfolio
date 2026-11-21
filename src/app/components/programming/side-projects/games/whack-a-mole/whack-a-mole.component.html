@@ -1,26 +1,29 @@
-<div [@fadeIn] class="game">
+<div animate.enter="fade-in" class="game">
   <h2 style="margin-top: 0">Whack-a-Mole</h2>
   @if (gameActive) {
     <p>Score: {{ score }}</p>
-    <p>Time Left: {{ timeLeft }} seconds</p>
+    <p>Time left: {{ timeLeft }} seconds</p>
   } @else {
-    <p>Click "Start Game" to begin!</p>
+    <p>Click "Start game" to begin!</p>
   }
   <div class="grid">
-    @for (hole of holes; track hole; let idx = $index) {
-      <div
-        (click)="whackMole(idx)"
-        class="hole">
+    @for (hole of holes; track $index; let idx = $index) {
+      <button
+        (keydown.enter)="whackMole(idx)"
+        (pointerdown)="whackMole(idx)"
+        [attr.aria-label]="hole ? 'Mole!' : 'Empty hole'"
+        class="hole"
+        type="button">
         @if (hole) {
-          <div class="mole">🐹</div>
+          <span class="mole">🐹</span>
         }
-      </div>
+      </button>
     }
   </div>
   @if (!gameActive) {
-    <button (click)="startGame()">Start Game</button>
-    @if (timeLeft !== 30) {
-      <p>Game Over! Your score is {{ score }}.</p>
+    <button (click)="startGame()" class="start" type="button">Start game</button>
+    @if (hasPlayed) {
+      <p aria-live="polite">Game over! Your score is {{ score }}.</p>
     }
   }
 </div>

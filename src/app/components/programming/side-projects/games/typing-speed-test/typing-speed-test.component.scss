@@ -30,3 +30,26 @@ button {
 p {
   font-size: 1.1em;
 }
+
+.text-to-type {
+  text-align: left;
+  line-height: 1.6;
+}
+
+.text-to-type .correct {
+  color: #2e7d32;
+}
+
+.text-to-type .wrong {
+  color: #c62828;
+  background-color: #ffcdd2;
+}
+
+.text-to-type .pending {
+  color: var(--text-color);
+}
+
+textarea {
+  box-sizing: border-box;
+  font-family: 'Roboto Mono', monospace;
+}
